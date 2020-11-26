@@ -1,22 +1,18 @@
-class RelationshipsController < ApplicationController
-  before_action :logged_in_user
+require 'test_helper'
 
-  def create
-    @user = User.find(params[:followed_id])
-    current_user.follow(@user)
-    respond_to do |format|
-      format.html { redirect_to @user }
-      format.js
+class RelationshipsControllerTest < ActionDispatch::IntegrationTest
+
+  test "create should require logged-in user" do
+    assert_no_difference 'Relationship.count' do
+      post relationships_path
     end
+    assert_redirected_to login_url
   end
 
-  def destroy
-    @user = Relationship.find(params[:id]).followed
-    current_user.unfollow(@user)
-    respond_to do |format|
-      format.html { redirect_to @user }
-      format.js
+  test "destroy should require logged-in user" do
+    assert_no_difference 'Relationship.count' do
+      delete relationship_path(relationships(:one))
     end
+    assert_redirected_to login_url
   end
 end
-

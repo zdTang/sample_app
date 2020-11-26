@@ -61,4 +61,3 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_redirected_to user
   end
 end
-
